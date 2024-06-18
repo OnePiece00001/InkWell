@@ -1,13 +1,16 @@
 import React, {useState, useEffect} from 'react'
 import { Container, PostCard } from '../components'
 import appwriteService from "../appwrite/config";
-
+import { useSelector } from 'react-redux';
 function AllPosts() {
+    const authUserData = useSelector((state) => state.auth.userData)
     const [posts, setPosts] = useState([])
     useEffect(() => {}, [])
     appwriteService.getPosts([]).then((posts) => {
         if (posts) {
-            setPosts(posts.documents)
+            const newPosts = posts.documents            
+            const fpost = newPosts?.filter((post) => post.userId === authUserData.$id)
+            setPosts(fpost)
         }
     })
   return (
