@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import appwriteService from "../appwrite/config";
 import {Container, PostCard} from '../components'
-
+import { useSelector } from 'react-redux';
 function Home() {
+    const authUserStatus = useSelector((state) => state.auth.status)
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
@@ -10,8 +11,11 @@ function Home() {
             if (posts) {
                 setPosts(posts.documents)
             }
+            else {
+                setPosts([])
+            }
         })
-    }, [])
+    }, [authUserStatus])
   
     if (posts.length === 0) {
         return (
